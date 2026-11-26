@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Records · OBE Portal{% endblock %}
+{% block content %}
+<p class="eyebrow">DATA MANAGEMENT</p><h1 class="page-title">Student & assessment records</h1>
+<div class="forms-grid">
+<form class="panel" method="post" action="{{ url_for('add_mark') }}"><h3>Record / update marks</h3>
+<label>Student<select name="student_id" required>{% for s in students %}<option value="{{ s.id }}">{{ s.roll_no }} — {{ s.name }}</option>{% endfor %}</select></label>
+<label>Course outcome<select name="outcome_id" required>{% for o in outcomes %}<option value="{{ o.id }}">{{ o.course_code }} · {{ o.code }} — {{ o.description }}</option>{% endfor %}</select></label>
+<div class="two"><label>Score<input name="score" type="number" min="0" step="0.5" value="75" required></label><label>Maximum<input name="max_score" type="number" min="1" step="0.5" value="100" required></label></div><button>Save marks</button></form>
+<div class="panel"><h3>How to test</h3><ol class="steps"><li>Add a course and a CO on the dashboard.</li><li>Add a student on the dashboard.</li><li>Record that student's score for a CO here.</li><li>Return to Dashboard and observe attainment update.</li></ol><a class="button secondary" href="{{ url_for('index') }}">Back to dashboard</a></div>
+</div>
+<div class="section-head"><div><p class="eyebrow">REGISTER</p><h2>Students</h2></div></div>
+<div class="table-wrap"><table><thead><tr><th>ROLL NO.</th><th>NAME</th></tr></thead><tbody>{% for s in students %}<tr><td>{{ s.roll_no }}</td><td>{{ s.name }}</td></tr>{% else %}<tr><td colspan="2">No students.</td></tr>{% endfor %}</tbody></table></div>
+<div class="section-head"><div><p class="eyebrow">ASSESSMENT</p><h2>Marks register</h2></div></div>
+<div class="table-wrap"><table><thead><tr><th>ROLL NO.</th><th>STUDENT</th><th>CO</th><th>SCORE</th><th>PERCENTAGE</th></tr></thead><tbody>
+{% for m in marks %}<tr><td>{{ m.roll_no }}</td><td>{{ m.name }}</td><td>{{ m.outcome_code }}</td><td>{{ m.score }}/{{ m.max_score }}</td><td>{{ (m.score/m.max_score*100)|round(1) }}%</td></tr>{% else %}<tr><td colspan="5">No marks recorded.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}
